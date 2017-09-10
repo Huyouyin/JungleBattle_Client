@@ -2,3 +2,6 @@
 Library/
 ProjectSettings/
 Temp/
+JungleBattle_Client.csproj
+JungleBattle_Client.Editor.csproj
+JungleBattle_Client.sln

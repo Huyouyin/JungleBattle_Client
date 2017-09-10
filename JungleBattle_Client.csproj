@@ -94,6 +94,9 @@
     <Reference Include="DOTweenPro">
       <HintPath>Assets\Demigiant\DOTweenPro\DOTweenPro.dll</HintPath>
     </Reference>
+    <Reference Include="Common">
+      <HintPath>Assets\Plugins\Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Demigiant\DOTweenPro\DOTweenAnimation.cs" />
@@ -135,10 +138,25 @@
     <Compile Include="Assets\Res\ImageEffects\Scripts\Twirl.cs" />
     <Compile Include="Assets\Res\ImageEffects\Scripts\VignetteAndChromaticAberration.cs" />
     <Compile Include="Assets\Res\ImageEffects\Scripts\Vortex.cs" />
+    <Compile Include="Assets\Scripts\Gloabal\GameFacade.cs" />
+    <Compile Include="Assets\Scripts\Manager\AudioManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\BaseManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\CameraManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\RequestManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\SocketManager.cs" />
+    <Compile Include="Assets\Scripts\Net\Client.cs" />
+    <Compile Include="Assets\Scripts\Net\Message.cs" />
+    <Compile Include="Assets\Scripts\Net\MessageData.cs" />
+    <Compile Include="Assets\Scripts\Net\Request\BaseRequest.cs" />
+    <Compile Include="Assets\Scripts\Tools\Log.cs" />
     <Compile Include="Assets\UIFramework\Base\BasePanel.cs" />
     <Compile Include="Assets\UIFramework\Extension\DictionaryExtension.cs" />
-    <Compile Include="Assets\UIFramework\Manager\GameRoot.cs" />
     <Compile Include="Assets\UIFramework\Manager\UIManager.cs" />
+    <Compile Include="Assets\UIFramework\UIPanel\LoginPanel.cs" />
+    <Compile Include="Assets\UIFramework\UIPanel\RegisterPanel.cs" />
+    <Compile Include="Assets\UIFramework\UIPanel\StartPanel.cs" />
+    <Compile Include="Assets\UIFramework\UIPanel\ToastPanel.cs" />
     <Compile Include="Assets\UIFramework\UIPanel\UIPanelInfo.cs" />
     <Compile Include="Assets\UIFramework\UIPanel\UIPanelType.cs" />
   </ItemGroup>
