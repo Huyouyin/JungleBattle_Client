@@ -1,26 +1,25 @@
 {
 "infoList":
 [
-{"panelTypeString":"ItemMessage",
-"path":"UIPanel/ItemMessagePanel"},
+  {
+    "panelTypeString": "toast",
+    "path": "UIPanel/ToastPanel"
+  },
 
-{"panelTypeString":"Knapsack",
-"path":"UIPanel/KnapsackPanel"},
+  {
+    "panelTypeString": "register",
+    "path": "UIPanel/RegisterPanel"
+  },
 
-{"panelTypeString":"MainMenu",
-"path":"UIPanel/MainMenuPanel"},
+  {
+    "panelTypeString": "login",
+    "path": "UIPanel/LoginPanel"
+  },
+  {
+    "panelTypeString": "start",
+    "path": "UIPanel/StartPanel"
+  }
 
-{"panelTypeString":"Shop",
-"path":"UIPanel/ShopPanel"},
-
-{"panelTypeString":"Skill",
-"path":"UIPanel/SkillPanel"},
-
-{"panelTypeString":"System",
-"path":"UIPanel/SystemPanel"},
-
-{"panelTypeString":"Task",
-"path":"UIPanel/TaskPanel"}
 
 ]
 }

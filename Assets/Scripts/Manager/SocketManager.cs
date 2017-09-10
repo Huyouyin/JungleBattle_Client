@@ -18,6 +18,6 @@ public class SocketManager : BaseManager {
     /// <param name="mdata"></param>
     private void ParseMessageCallBack(MessageData mdata)
     {
-        gameFacade.HandleMessage(mdata);
+        RequestManager mgr = gameFacade.GetManager(ManagerType.RequestManager) as RequestManager;
     }
 }

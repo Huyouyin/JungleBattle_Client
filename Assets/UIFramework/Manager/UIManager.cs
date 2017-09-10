@@ -25,6 +25,7 @@ public class UIManager:BaseManager{
     public UIManager(GameFacade facade):base(facade)
     {
         ParseUIPanelTypeJson();
+        panelStack = new Stack<BasePanel>();
     }
 
     /// <summary>
@@ -32,9 +33,6 @@ public class UIManager:BaseManager{
     /// </summary>
     public void PushPanel(UIPanelType panelType)
     {
-        if (panelStack == null)
-            panelStack = new Stack<BasePanel>();
-
         //判断一下栈里面是否有页面
         if (panelStack.Count > 0)
         {
@@ -43,6 +41,10 @@ public class UIManager:BaseManager{
         }
 
         BasePanel panel = GetPanel(panelType);
+        PushPanel(panel);
+    }
+    public void PushPanel(BasePanel panel)
+    {
         panel.OnEnter();
         panelStack.Push(panel);
     }
@@ -85,8 +87,6 @@ public class UIManager:BaseManager{
         if (panel == null)
         {
             //如果找不到，那么就找这个面板的prefab的路径，然后去根据prefab去实例化面板
-            //string path;
-            //panelPathDict.TryGetValue(panelType, out path);
             string path = panelPathDict.TryGet(panelType);
             GameObject instPanel = GameObject.Instantiate(Resources.Load(path)) as GameObject;
             instPanel.transform.SetParent(CanvasTransform,false);
@@ -98,6 +98,17 @@ public class UIManager:BaseManager{
             return panel;
         }
 
+    }
+
+    public void ShowToast(string msg,float time)
+    {
+        if(string.IsNullOrEmpty(msg))
+            return;
+        ToastPanel toast = GetPanel(UIPanelType.toast) as ToastPanel;
+        toast.SetMessage(msg);
+        toast.SetDuringTime(time);
+        toast.SetManager(this);
+        PushPanel(toast);
     }
 
     [Serializable]
@@ -126,7 +137,15 @@ public class UIManager:BaseManager{
     public void Test()
     {
         string path ;
-        panelPathDict.TryGetValue(UIPanelType.Knapsack,out path);
+        panelPathDict.TryGetValue(UIPanelType.toast,out path);
         Debug.Log(path);
+    }
+}
+public static class Toast
+{
+    public static void ShowToast(string msg, float duringTime = 1f)
+    {
+        UIManager uiMgr = GameFacade.instance.GetManager(ManagerType.UIManager) as UIManager;
+        uiMgr.ShowToast(msg,duringTime);
     }
 }
