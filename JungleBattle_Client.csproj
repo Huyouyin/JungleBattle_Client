@@ -145,14 +145,15 @@
     <Compile Include="Assets\Scripts\Manager\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Manager\RequestManager.cs" />
     <Compile Include="Assets\Scripts\Manager\SocketManager.cs" />
+    <Compile Include="Assets\Scripts\Manager\UIManager.cs" />
     <Compile Include="Assets\Scripts\Net\Client.cs" />
     <Compile Include="Assets\Scripts\Net\Message.cs" />
     <Compile Include="Assets\Scripts\Net\MessageData.cs" />
     <Compile Include="Assets\Scripts\Net\Request\BaseRequest.cs" />
+    <Compile Include="Assets\Scripts\Net\Request\LoginRequest.cs" />
     <Compile Include="Assets\Scripts\Tools\Log.cs" />
     <Compile Include="Assets\UIFramework\Base\BasePanel.cs" />
     <Compile Include="Assets\UIFramework\Extension\DictionaryExtension.cs" />
-    <Compile Include="Assets\UIFramework\Manager\UIManager.cs" />
     <Compile Include="Assets\UIFramework\UIPanel\LoginPanel.cs" />
     <Compile Include="Assets\UIFramework\UIPanel\RegisterPanel.cs" />
     <Compile Include="Assets\UIFramework\UIPanel\StartPanel.cs" />

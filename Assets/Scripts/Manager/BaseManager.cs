@@ -13,7 +13,6 @@ public abstract class BaseManager{
     {
         this.gameFacade = facade;
     }
-    
-    
-    
+    public virtual void OnDestroy()
+    { }
 }

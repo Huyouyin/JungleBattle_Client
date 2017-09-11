@@ -1,27 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class BasePanel : MonoBehaviour {
     protected CanvasGroup canvasGroup;
-    protected float enterTime = 1f;//所有面板的进入时间  可以另行设置
-    protected float exitTime = 1f;//所有面板的退出时间   可以另性设置
+    protected float enterTime = 0.5f;//所有面板的进入时间  可以另行设置
+    protected float exitTime = 0.5f;//所有面板的退出时间   可以另性设置
+    protected UIManager uiMgr;
+    protected Tweener enterTweener;
+    protected Tweener exitTweener;
 
 
+    private void Awake()
+    {
+        InitPanel();
+    }
+
+    protected virtual void InitPanel() {
+        canvasGroup = GetComponent<CanvasGroup>();
+        uiMgr = GameFacade.instance.GetManager(ManagerType.UIManager) as UIManager;
+    }
+    
     /// <summary>
     /// 界面被显示出来
     /// </summary>
     public virtual void OnEnter()
     {
-        if(canvasGroup == null)
-            canvasGroup = GetComponent<CanvasGroup>();
+        EnterTweening();
     }
-
+    protected virtual void EnterTweening() { }
     /// <summary>
     /// 界面暂停
     /// </summary>
     public virtual void OnPause()
     {
-
+        canvasGroup.interactable = false;
     }
 
     /// <summary>
@@ -29,7 +42,7 @@ public class BasePanel : MonoBehaviour {
     /// </summary>
     public virtual void OnResume()
     {
-
+        canvasGroup.interactable = true;
     }
 
     /// <summary>
@@ -37,6 +50,9 @@ public class BasePanel : MonoBehaviour {
     /// </summary>
     public virtual void OnExit()
     {
-
+        ExitTweening();
     }
+
+    protected virtual void ExitTweening()
+    { }
 }

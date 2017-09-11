@@ -34,38 +34,36 @@ public class UIManager:BaseManager{
     public void PushPanel(UIPanelType panelType)
     {
         //判断一下栈里面是否有页面
-        if (panelStack.Count > 0)
+        BasePanel panel = GetPanel(panelType);
+        if(panelStack.Count > 0)
         {
             BasePanel topPanel = panelStack.Peek();
+            if(topPanel==panel)//目标页面已经在栈顶了
+            {
+                return;
+            }
+            Log.i((topPanel == panel).ToString());
             topPanel.OnPause();
         }
-
-        BasePanel panel = GetPanel(panelType);
-        PushPanel(panel);
-    }
-    public void PushPanel(BasePanel panel)
-    {
         panel.OnEnter();
         panelStack.Push(panel);
     }
+   
     /// <summary>
     /// 出栈 ，把页面从界面上移除
     /// </summary>
     public void PopPanel()
     {
-        if (panelStack == null)
-            panelStack = new Stack<BasePanel>();
-
         if (panelStack.Count <= 0) return;
 
         //关闭栈顶页面的显示
         BasePanel topPanel = panelStack.Pop();
         topPanel.OnExit();
+        Log.i(topPanel.name);
 
         if (panelStack.Count <= 0) return;
         BasePanel topPanel2 = panelStack.Peek();
         topPanel2.OnResume();
-
     }
 
     /// <summary>
@@ -108,7 +106,7 @@ public class UIManager:BaseManager{
         toast.SetMessage(msg);
         toast.SetDuringTime(time);
         toast.SetManager(this);
-        PushPanel(toast);
+        PushPanel(UIPanelType.toast);
     }
 
     [Serializable]

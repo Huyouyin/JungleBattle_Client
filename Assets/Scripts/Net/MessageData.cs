@@ -14,6 +14,12 @@ public class MessageData{
         this.actionCode = (ActionCode)action;
         this.data = data;
     }
+    public MessageData(RequestCode request , ActionCode action , string data)
+    {
+        this.requsetCode = request;
+        this.actionCode = action;
+        this.data = data;
+    }
     public MessageData(int request , string data)
     {
         this.requsetCode = (RequestCode)request;

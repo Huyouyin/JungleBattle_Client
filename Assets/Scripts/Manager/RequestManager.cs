@@ -25,7 +25,12 @@ public class RequestManager : BaseManager {
         return request;
     }
 
-    public void HandleRequest(MessageData mdata)
+    public void HandleRequest(RequestCode reCode,ActionCode acCode,string data)
+    {
+        BaseRequest targetrequest = GetRequest(reCode);
+        targetrequest.HandleReqest(acCode , data);
+    }
+    public void Onresponse(MessageData mdata)
     {
         BaseRequest targetrequest = GetRequest(mdata.requsetCode);
         targetrequest.OnResponse(mdata);

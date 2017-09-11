@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using UnityEngine;
+using Common;
 
 /// <summary>
 /// 2017-9-9
@@ -15,7 +16,7 @@ public class Client{
     private IPEndPoint ipendPoint;
     private Message msg;
     private Action<MessageData> parseMessageCallBack;   //解析消息回调
-    public Client(string ip,int port)
+    public Client(string ip,int port, Action<MessageData> parseCallBack)
     {
         clientSocket = new Socket(AddressFamily.InterNetwork , SocketType.Stream , ProtocolType.Tcp);
         msg = new Message();
@@ -23,6 +24,7 @@ public class Client{
         try
         {
             clientSocket.Connect(ipendPoint);
+            parseMessageCallBack = parseCallBack;
         }
         catch
         {
@@ -42,10 +44,17 @@ public class Client{
         msg.ParseMessage(parseMessageCallBack);
         BeginReceive();
     }
-
-    public void Send(byte[] buffer)
+    
+    public void SendMessage(RequestCode reCode , ActionCode acCode , string data)
     {
+        MessageData mdata = new MessageData(reCode , acCode , data);
+        byte[] buffer = Message.PackData(mdata);
         clientSocket.Send(buffer);
     }
-    
+
+    public void OnDestroy()
+    {
+        if(clientSocket != null)
+            clientSocket.Close();
+    }
 }

@@ -5,34 +5,35 @@ using DG.Tweening;
 using UnityEngine.UI;
 
 public class ToastPanel : BasePanel {
-    private UIManager uiMgr;
     private float duringTime = 1f;
     private Text msg;
-    
+    protected override void InitPanel()
+    {
+        base.InitPanel();
+        this.msg = transform.Find("message").GetComponent<Text>();
+        canvasGroup.alpha = 0;
+    }
     public override void OnEnter()
     {
         base.OnEnter();
         
         transform.SetAsLastSibling();
-        gameObject.SetActive(true);
-                
         EnterTweening();
     }
     /// <summary>
     /// 进入动画
     /// </summary>
-    private void EnterTweening()
+    protected override void EnterTweening()
     {
-        canvasGroup.DOFade(1f , 0.5f).OnComplete(() =>
+        canvasGroup.DOFade(1f , enterTime).OnComplete(() =>
         {
             Invoke("Hide" , duringTime);
         });        
     }
     private void Hide()
     {
-        canvasGroup.DOFade(0 , 0.5f).OnComplete(()=> {
+        canvasGroup.DOFade(0 , exitTime).OnComplete(()=> {
             uiMgr.PopPanel();
-            gameObject.SetActive(false);
         });
     }
     public void SetDuringTime(float time)
@@ -41,10 +42,6 @@ public class ToastPanel : BasePanel {
     }
     public void SetMessage(string msg)
     {
-        if(this.msg == null)
-        {
-            this.msg = transform.Find("message").GetComponent<Text>();
-        }
         this.msg.text = msg;
     }
     public void SetManager(UIManager mgr)
