@@ -47,6 +47,12 @@ public class LoginPanel : BasePanel {
         exitTweener = exitTweener = transform.DOLocalMove(originPos , exitTime);
     }
 
+    protected override void ResetPanel()
+    {
+        fieldName.text = "";
+        fieldPass.text = "";
+    }
+
     private void OnClickClose()
     {
         uiMgr.PopPanel();
@@ -64,7 +70,7 @@ public class LoginPanel : BasePanel {
         {
             return;
         }
-        string data = fieldName + " " + fieldPass;
+        string data = fieldName.text + " " + fieldPass.text;
         requestMgr.HandleRequest(RequestCode.LoginRequest , ActionCode.Login , data);
     }
 

@@ -23,11 +23,14 @@ public class GameFacade : MonoBehaviour {
     }
     void Init()
     {
+        MessageContent msgContent = GetComponent<MessageContent>();
         managerDic = new Dictionary<ManagerType , BaseManager>();
+
         RequestManager requestMgr = new RequestManager(this);
         managerDic.Add(ManagerType.RequestManager , requestMgr);
+        msgContent.SetRequestMgr(requestMgr);
 
-        SocketManager socketMgr = new SocketManager(this);
+        SocketManager socketMgr = new SocketManager(this,msgContent);
         managerDic.Add(ManagerType.SocketManager , socketMgr);
 
         UIManager uiMgr = new UIManager(this);
@@ -41,7 +44,6 @@ public class GameFacade : MonoBehaviour {
 
         AudioManager audioMgr = new AudioManager(this);
         managerDic.Add(ManagerType.AudioManager , audioMgr);
-
     }
 
     public BaseManager GetManager(ManagerType type)

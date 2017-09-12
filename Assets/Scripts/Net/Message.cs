@@ -58,7 +58,7 @@ public class Message
             return false;
         }
         int requestcode = BitConverter.ToInt32(receiveMsg , MSG_HEAD_LENGTH);
-        string msg = Encoding.UTF8.GetString(receiveMsg , MSG_HEAD_LENGTH * 2 , msglength - MSG_HEAD_LENGTH * 2);
+        string msg = Encoding.UTF8.GetString(receiveMsg , MSG_HEAD_LENGTH * 2 , msglength - MSG_HEAD_LENGTH);
         MessageData md = new MessageData(requestcode ,msg);
         handleMesssage(md);
         UpdateCache(msglength + MSG_HEAD_LENGTH);
@@ -75,5 +75,20 @@ public class Message
 
         byte[] buffer = lengthBuffer.Concat(requestBuffer).Concat(actionBuffer).Concat(strBuffer).ToArray();
         return buffer;
+    }
+
+    public static string PackContentData(params string[] datas)
+    {
+        string str = string.Empty;
+        for(int i=0;i<datas.Length;i++)
+        {
+            if(i != datas.Length-1)
+            {
+                str += datas[i] + " ";
+                continue;
+            }
+            str += datas[i];
+        }
+        return str;
     }
 }

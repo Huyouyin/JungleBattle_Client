@@ -8,11 +8,12 @@ public class SocketManager : BaseManager {
     private readonly string IP = "127.0.0.1";
     private readonly int PORT = 9527;
     private Client client;
-    private RequestManager requestMgr;
-    public SocketManager(GameFacade facade):base(facade)
+    private MessageContent msgContent;
+
+    public SocketManager(GameFacade facade,MessageContent msgContent):base(facade)
     {
+        this.msgContent = msgContent;
         client = new Client(IP , PORT,ParseMessageCallBack);
-        requestMgr = gameFacade.GetManager(ManagerType.RequestManager) as RequestManager;
         client.BeginReceive();
     }
     /// <summary>
@@ -21,7 +22,7 @@ public class SocketManager : BaseManager {
     /// <param name="mdata"></param>
     private void ParseMessageCallBack(MessageData mdata)
     {
-        requestMgr.Onresponse(mdata);
+        msgContent.EnqueueMsg(mdata);
     }
     
     public void SendRequest(RequestCode reCode,ActionCode acCode,string data)

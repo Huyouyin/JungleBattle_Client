@@ -10,11 +10,19 @@ using Common;
 /// </summary>
 public abstract class BaseRequest{
     protected RequestCode requestCode;
-    protected SocketManager socketMgr;
-    public BaseRequest()
+    private SocketManager socketMgr;
+    protected SocketManager SocketMgr
     {
-        socketMgr = GameFacade.instance.GetManager(ManagerType.SocketManager) as SocketManager;
+        get
+        {
+            if(socketMgr==null)
+            {
+                socketMgr = GameFacade.instance.GetManager(ManagerType.SocketManager) as SocketManager;
+            }
+            return socketMgr;
+        }
     }
+
     public abstract void HandleReqest(ActionCode action , string data);
 
     /// <summary>

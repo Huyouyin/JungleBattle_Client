@@ -42,7 +42,6 @@ public class UIManager:BaseManager{
             {
                 return;
             }
-            Log.i((topPanel == panel).ToString());
             topPanel.OnPause();
         }
         panel.OnEnter();
@@ -59,7 +58,6 @@ public class UIManager:BaseManager{
         //关闭栈顶页面的显示
         BasePanel topPanel = panelStack.Pop();
         topPanel.OnExit();
-        Log.i(topPanel.name);
 
         if (panelStack.Count <= 0) return;
         BasePanel topPanel2 = panelStack.Peek();
@@ -103,10 +101,12 @@ public class UIManager:BaseManager{
         if(string.IsNullOrEmpty(msg))
             return;
         ToastPanel toast = GetPanel(UIPanelType.toast) as ToastPanel;
-        toast.SetMessage(msg);
         toast.SetDuringTime(time);
-        toast.SetManager(this);
-        PushPanel(UIPanelType.toast);
+        if(!toast.IsEnter())
+        {
+            toast.SetMessage(msg);
+            toast.OnEnter();
+        }
     }
 
     [Serializable]
@@ -146,4 +146,5 @@ public static class Toast
         UIManager uiMgr = GameFacade.instance.GetManager(ManagerType.UIManager) as UIManager;
         uiMgr.ShowToast(msg,duringTime);
     }
+    //public static 
 }

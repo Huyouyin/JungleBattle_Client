@@ -26,6 +26,7 @@ public class BasePanel : MonoBehaviour {
     /// </summary>
     public virtual void OnEnter()
     {
+        ResetPanel();
         EnterTweening();
     }
     protected virtual void EnterTweening() { }
@@ -55,4 +56,8 @@ public class BasePanel : MonoBehaviour {
 
     protected virtual void ExitTweening()
     { }
+    protected virtual void ResetPanel()
+    {
+
+    }
 }

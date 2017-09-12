@@ -14,6 +14,8 @@ public class RequestManager : BaseManager {
     public RequestManager(GameFacade facade) : base(facade)
     {
         requestDic = new Dictionary<RequestCode , BaseRequest>();
+        requestDic.Add(RequestCode.LoginRequest , new LoginRequest());
+        requestDic.Add(RequestCode.RegisterRequest , new RegisterRequest());
     }
     private BaseRequest GetRequest(RequestCode requestcode)
     {
@@ -30,7 +32,8 @@ public class RequestManager : BaseManager {
         BaseRequest targetrequest = GetRequest(reCode);
         targetrequest.HandleReqest(acCode , data);
     }
-    public void Onresponse(MessageData mdata)
+    //响应服务器端发过来的消息
+    public void OnResponse(MessageData mdata)
     {
         BaseRequest targetrequest = GetRequest(mdata.requsetCode);
         targetrequest.OnResponse(mdata);
