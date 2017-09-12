@@ -12,13 +12,14 @@ public class LoginPanel : BasePanel {
     private InputField fieldName;
     private InputField fieldPass;
     private Vector2 originPos =new Vector2(1024,0);
-
+    private AudioManager audioMgr;
     private RequestManager requestMgr;
 
     protected override void InitPanel()
     {
         base.InitPanel();
         requestMgr = GameFacade.instance.GetManager(ManagerType.RequestManager) as RequestManager;
+        audioMgr = GameFacade.instance.GetManager(ManagerType.AudioManager) as AudioManager;
 
         loginButton = transform.Find("loginButton").GetComponent<Button>();
         loginButton.onClick.AddListener(OnClickLogin);
@@ -55,6 +56,7 @@ public class LoginPanel : BasePanel {
 
     private void OnClickClose()
     {
+        audioMgr.PlaySound(SoundType.ButtonClick);
         uiMgr.PopPanel();
         exitTweener.OnComplete(() => {
             canvasGroup.interactable = false;
@@ -65,6 +67,8 @@ public class LoginPanel : BasePanel {
 
     private void OnClickLogin()
     {
+        audioMgr.PlaySound(SoundType.ButtonClick);
+
         bool varifyRes = VarifyAccount();
         if(!varifyRes)  
         {
@@ -108,6 +112,8 @@ public class LoginPanel : BasePanel {
 
     private void OnClickRegister()
     {
+        audioMgr.PlaySound(SoundType.ButtonClick);
+
         uiMgr.PopPanel();
         exitTweener.OnComplete(() =>
         {

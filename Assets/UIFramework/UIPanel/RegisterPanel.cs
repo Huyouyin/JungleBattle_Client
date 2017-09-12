@@ -14,12 +14,13 @@ public class RegisterPanel : BasePanel {
     private Button registerButton;
 
     private RequestManager requestMgr;
+    private AudioManager audioMgr;
 
     protected override void InitPanel()
     {
         base.InitPanel();
         requestMgr = GameFacade.instance.GetManager(ManagerType.RequestManager) as RequestManager;
-
+        audioMgr = GameFacade.instance.GetManager(ManagerType.AudioManager) as AudioManager;
         closeButton = transform.Find("close").GetComponent<Button>();
         closeButton.onClick.AddListener(OnClickClose);
         fieldname = transform.Find("username/Input").GetComponent<InputField>();
@@ -55,6 +56,8 @@ public class RegisterPanel : BasePanel {
 
     private void OnClickClose()
     {
+        audioMgr.PlaySound(SoundType.ButtonClick);
+
         uiMgr.PopPanel();
         exitTweener.OnComplete(() => {
             canvasGroup.interactable = false;
@@ -65,6 +68,8 @@ public class RegisterPanel : BasePanel {
 
     private void OnClickRegister()
     {
+        audioMgr.PlaySound(SoundType.ButtonClick);
+
         if(VarifyAccount())
         {
             string data = Message.PackContentData(fieldname.text , fieldpass.text);
