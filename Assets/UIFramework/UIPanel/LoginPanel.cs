@@ -12,15 +12,11 @@ public class LoginPanel : BasePanel {
     private InputField fieldName;
     private InputField fieldPass;
     private Vector2 originPos =new Vector2(1024,0);
-    private AudioManager audioMgr;
-    private RequestManager requestMgr;
 
     protected override void InitPanel()
     {
         base.InitPanel();
-        requestMgr = GameFacade.instance.GetManager(ManagerType.RequestManager) as RequestManager;
-        audioMgr = GameFacade.instance.GetManager(ManagerType.AudioManager) as AudioManager;
-
+        
         loginButton = transform.Find("loginButton").GetComponent<Button>();
         loginButton.onClick.AddListener(OnClickLogin);
         registerButton = transform.Find("registerButton").GetComponent<Button>();
@@ -45,7 +41,7 @@ public class LoginPanel : BasePanel {
     protected override void ExitTweening()
     {
         transform.DOScale(0 , exitTime);
-        exitTweener = exitTweener = transform.DOLocalMove(originPos , exitTime);
+        exitTweener = transform.DOLocalMove(originPos , exitTime);
     }
 
     protected override void ResetPanel()
@@ -56,18 +52,18 @@ public class LoginPanel : BasePanel {
 
     private void OnClickClose()
     {
-        audioMgr.PlaySound(SoundType.ButtonClick);
-        uiMgr.PopPanel();
+        GameFacade.instance.PlaySound(SoundType.ButtonClick);
+        GameFacade.instance.PopPanel();
         exitTweener.OnComplete(() => {
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
-            uiMgr.PushPanel(UIPanelType.start);
+            GameFacade.instance.PushPanel(UIPanelType.start);
         });
     }
 
     private void OnClickLogin()
     {
-        audioMgr.PlaySound(SoundType.ButtonClick);
+        GameFacade.instance.PlaySound(SoundType.ButtonClick);
 
         bool varifyRes = VarifyAccount();
         if(!varifyRes)  
@@ -75,7 +71,20 @@ public class LoginPanel : BasePanel {
             return;
         }
         string data = fieldName.text + " " + fieldPass.text;
-        requestMgr.HandleRequest(RequestCode.LoginRequest , ActionCode.Login , data);
+        GameFacade.instance.HandleRequest(RequestCode.LoginRequest , ActionCode.Login , data,LoginCallBack);
+    }
+
+    /// <summary>
+    /// 登陆成功回调
+    /// </summary>
+    private void LoginCallBack()
+    {
+        GameFacade.instance.SetAccount(fieldName.text , fieldPass.text);
+        GameFacade.instance.PopPanel();
+        exitTweener.OnComplete(() =>
+        {
+            GameFacade.instance.PushPanel(UIPanelType.roomlist);
+        });
     }
 
     /// <summary>
@@ -112,14 +121,14 @@ public class LoginPanel : BasePanel {
 
     private void OnClickRegister()
     {
-        audioMgr.PlaySound(SoundType.ButtonClick);
+        GameFacade.instance.PlaySound(SoundType.ButtonClick);
 
-        uiMgr.PopPanel();
+        GameFacade.instance.PopPanel();
         exitTweener.OnComplete(() =>
         {
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
-            uiMgr.PushPanel(UIPanelType.register);
+            GameFacade.instance.PushPanel(UIPanelType.register);
         });
     }
 }

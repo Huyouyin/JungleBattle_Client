@@ -9,9 +9,9 @@ public class RegisterRequest : BaseRequest {
     {
         this.requestCode = RequestCode.RegisterRequest;
     }
-    public override void HandleReqest(ActionCode action , string data)
+    public override void HandleReqest(ActionCode action , string data , Action callback = null)
     {
-        SocketMgr.SendRequest(requestCode , ActionCode.Register , data);
+        GameFacade.instance.SendRequest(requestCode , ActionCode.Register , data);
     }
 
     public override void OnResponse(MessageData mdata)

@@ -6,7 +6,6 @@ public class BasePanel : MonoBehaviour {
     protected CanvasGroup canvasGroup;
     protected float enterTime = 0.5f;//所有面板的进入时间  可以另行设置
     protected float exitTime = 0.5f;//所有面板的退出时间   可以另性设置
-    protected UIManager uiMgr;
     protected Tweener enterTweener;
     protected Tweener exitTweener;
 
@@ -18,7 +17,6 @@ public class BasePanel : MonoBehaviour {
 
     protected virtual void InitPanel() {
         canvasGroup = GetComponent<CanvasGroup>();
-        uiMgr = GameFacade.instance.GetManager(ManagerType.UIManager) as UIManager;
     }
     
     /// <summary>

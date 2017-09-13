@@ -18,6 +18,14 @@
   {
     "panelTypeString": "start",
     "path": "UIPanel/StartPanel"
+  },
+  {
+    "panelTypeString": "roomlist",
+    "path": "UIPanel/RoomlistPanel"
+  },
+  {
+    "panelTypeString": "wait",
+    "path": "UIPanel/WaitPanel"
   }
 
 

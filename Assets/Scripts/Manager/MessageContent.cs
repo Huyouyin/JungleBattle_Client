@@ -9,8 +9,6 @@ using UnityEngine;
 /// </summary>
 public class MessageContent:MonoBehaviour{
     private Queue<MessageData> msgQueue;//消息队列
-    private RequestManager requestMgr;
-
     private void Awake()
     {
         msgQueue = new Queue<MessageData>();
@@ -27,12 +25,8 @@ public class MessageContent:MonoBehaviour{
         if(msgQueue.Count > 0)
         {
             MessageData mdata = msgQueue.Dequeue();
-            requestMgr.OnResponse(mdata);
+            GameFacade.instance.OnResponse(mdata);
         }
     }
-
-    public void SetRequestMgr(RequestManager mgr)
-    {
-        this.requestMgr = mgr;
-    }
+    
 }

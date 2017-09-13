@@ -1,11 +1,22 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Common;
+using System;
 
-public class GameFacade : MonoBehaviour {
+public class GameFacade :MonoBehaviour
+{
     public static GameFacade instance;
-    private Dictionary<ManagerType , BaseManager> managerDic;
-    
+
+    MessageContent msgContent;
+
+    RequestManager requestMgr;
+    SocketManager socketMgr;
+    UIManager uiMgr;
+    CameraManager cameraMgr;
+    PlayerManager playerMgr;
+    AudioManager audioMgr;
+
     private void Awake()
     {
         if(instance != null)
@@ -18,56 +29,96 @@ public class GameFacade : MonoBehaviour {
     }
     private void Start()
     {
-        UIManager uiMgr = GetManager(ManagerType.UIManager) as UIManager;
         uiMgr.PushPanel(UIPanelType.start);
     }
     void Init()
     {
-        MessageContent msgContent = GetComponent<MessageContent>();
-        managerDic = new Dictionary<ManagerType , BaseManager>();
+        msgContent = GetComponent<MessageContent>();
 
-        RequestManager requestMgr = new RequestManager(this);
-        managerDic.Add(ManagerType.RequestManager , requestMgr);
-        msgContent.SetRequestMgr(requestMgr);
+        requestMgr = new RequestManager(this);
 
-        SocketManager socketMgr = new SocketManager(this,msgContent);
-        managerDic.Add(ManagerType.SocketManager , socketMgr);
+        socketMgr = new SocketManager(this);
 
-        UIManager uiMgr = new UIManager(this);
-        managerDic.Add(ManagerType.UIManager , uiMgr);
+        uiMgr = new UIManager(this);
 
-        CameraManager cameraMgr = new CameraManager(this);
-        managerDic.Add(ManagerType.CameraManager , cameraMgr);
+        cameraMgr = new CameraManager(this);
 
-        PlayerManager playerMgr = new PlayerManager(this);
-        managerDic.Add(ManagerType.PlayerManager , playerMgr);
+        playerMgr = new PlayerManager(this);
 
-        AudioManager audioMgr = new AudioManager(this);
-        managerDic.Add(ManagerType.AudioManager , audioMgr);
+        audioMgr = new AudioManager(this);
     }
 
-    public BaseManager GetManager(ManagerType type)
+    public void EnqueueMsg(MessageData mdata)
     {
-        BaseManager mgr = managerDic.TryGet(type);
-        if(mgr==null)
-                throw new System.Exception("没有找到对应管理器：" + type.ToString());
-        return mgr;
+        msgContent.EnqueueMsg(mdata);
+    }
+
+    public void ShowToast(string msg , float duringTime = 1f)
+    {
+        uiMgr.ShowToast(msg , duringTime);
+    }
+
+    public void SendRequest(RequestCode reCode , ActionCode acCode ,string data)
+    {
+        socketMgr.SendRequest(reCode , acCode , data);
+    }
+
+    public void SetPlayerGameCount(int total,int win)
+    {
+       playerMgr.SetGameCount(total , win);
+    }
+    public void SetAccount(string name , string pass)
+    {
+        playerMgr.SetAccount(name, pass);
+    }
+
+
+    public void PopPanel()
+    {
+        uiMgr.PopPanel();
+    }
+
+    public void PushPanel(UIPanelType paneltype)
+    {
+        uiMgr.PushPanel(paneltype);
+    }
+
+    public void PlaySound(SoundType soundtype)
+    {
+        audioMgr.PlaySound(soundtype);
+    }
+    public void PlayBg(SoundType soundtype)
+    {
+        audioMgr.PlayBg(soundtype);
+    }
+
+    public void HandleRequest(RequestCode reCode, ActionCode acCode ,string data,Action callback=null)
+    {
+        requestMgr.HandleRequest(reCode , acCode , data, callback);
+    }
+
+    public void OnResponse(MessageData mdata)
+    {
+        requestMgr.OnResponse(mdata);
+    }
+    
+    public PlayerInfo GetPlayerInfo()
+    {
+        return playerMgr.GetPlayerInfo();
+    }
+
+    public void ShowWait()
+    {
+        uiMgr.PushPanel(UIPanelType.wait);
     }
 
     private void OnDestroy()
     {
-        foreach (var key in managerDic.Keys)
-        {
-            managerDic[key].OnDestroy();
-        }
+        requestMgr.OnDestroy();
+        socketMgr.OnDestroy();
+        uiMgr.OnDestroy();
+        cameraMgr.OnDestroy();
+        playerMgr.OnDestroy();
+        audioMgr.OnDestroy();
     }
-}
-public enum ManagerType
-{
-     SocketManager,
-     UIManager ,
-     AudioManager ,
-     PlayerManager ,
-     RequestManager ,
-     CameraManager
 }

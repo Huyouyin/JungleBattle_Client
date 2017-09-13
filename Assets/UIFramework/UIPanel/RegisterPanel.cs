@@ -13,14 +13,11 @@ public class RegisterPanel : BasePanel {
     private InputField fieldconfirm;
     private Button registerButton;
 
-    private RequestManager requestMgr;
-    private AudioManager audioMgr;
+
 
     protected override void InitPanel()
     {
         base.InitPanel();
-        requestMgr = GameFacade.instance.GetManager(ManagerType.RequestManager) as RequestManager;
-        audioMgr = GameFacade.instance.GetManager(ManagerType.AudioManager) as AudioManager;
         closeButton = transform.Find("close").GetComponent<Button>();
         closeButton.onClick.AddListener(OnClickClose);
         fieldname = transform.Find("username/Input").GetComponent<InputField>();
@@ -56,24 +53,24 @@ public class RegisterPanel : BasePanel {
 
     private void OnClickClose()
     {
-        audioMgr.PlaySound(SoundType.ButtonClick);
+        GameFacade.instance.PlaySound(SoundType.ButtonClick);
 
-        uiMgr.PopPanel();
+        GameFacade.instance.PopPanel();
         exitTweener.OnComplete(() => {
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
-            uiMgr.PushPanel(UIPanelType.login);
+            GameFacade.instance.PushPanel(UIPanelType.login);
         });
     }
 
     private void OnClickRegister()
     {
-        audioMgr.PlaySound(SoundType.ButtonClick);
+        GameFacade.instance.PlaySound(SoundType.ButtonClick);
 
         if(VarifyAccount())
         {
             string data = Message.PackContentData(fieldname.text , fieldpass.text);
-            requestMgr.HandleRequest(RequestCode.RegisterRequest , ActionCode.Register , data);
+            GameFacade.instance.HandleRequest(RequestCode.RegisterRequest , ActionCode.Register , data);
         }
     }
 

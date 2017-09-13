@@ -8,11 +8,9 @@ using DG.Tweening;
 public class StartPanel : BasePanel {
     private Button loginButton;
     float angle = 360;
-    private AudioManager audioMgr;
 
     protected override void InitPanel()
     {
-        audioMgr = GameFacade.instance.GetManager(ManagerType.AudioManager) as AudioManager;
         base.InitPanel();
         enterTime = 0.3f;
         exitTime = 0.3f;
@@ -35,15 +33,14 @@ public class StartPanel : BasePanel {
     }
     private void OnLoginClick()
     {
-        audioMgr.PlaySound(SoundType.ButtonClick);
-
-        uiMgr.PopPanel();
+        GameFacade.instance.PlaySound(SoundType.ButtonClick);
+        GameFacade.instance.PopPanel();
     }
 
     public override void OnExit()
     {
         base.OnExit();
-        uiMgr.PushPanel(UIPanelType.login);
+        GameFacade.instance.PushPanel(UIPanelType.login);
     }
     protected override void ExitTweening()
     {

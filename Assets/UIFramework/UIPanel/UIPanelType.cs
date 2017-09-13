@@ -7,5 +7,7 @@ public enum UIPanelType  {
     start,
     toast,
     login,
-    register
+    register,
+    roomlist,
+    wait
 }

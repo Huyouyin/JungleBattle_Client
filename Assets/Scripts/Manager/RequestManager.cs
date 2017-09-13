@@ -27,14 +27,16 @@ public class RequestManager : BaseManager {
         return request;
     }
 
-    public void HandleRequest(RequestCode reCode,ActionCode acCode,string data)
+    public void HandleRequest(RequestCode reCode,ActionCode acCode,string data,Action callback)
     {
+        gameFacade.ShowWait();
         BaseRequest targetrequest = GetRequest(reCode);
-        targetrequest.HandleReqest(acCode , data);
+        targetrequest.HandleReqest(acCode , data , callback);
     }
     //响应服务器端发过来的消息
     public void OnResponse(MessageData mdata)
     {
+        gameFacade.PopPanel();
         BaseRequest targetrequest = GetRequest(mdata.requsetCode);
         targetrequest.OnResponse(mdata);
     }

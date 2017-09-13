@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Common;
+using System;
 
 /// <summary>
 /// 2017-9-9
@@ -10,20 +11,8 @@ using Common;
 /// </summary>
 public abstract class BaseRequest{
     protected RequestCode requestCode;
-    private SocketManager socketMgr;
-    protected SocketManager SocketMgr
-    {
-        get
-        {
-            if(socketMgr==null)
-            {
-                socketMgr = GameFacade.instance.GetManager(ManagerType.SocketManager) as SocketManager;
-            }
-            return socketMgr;
-        }
-    }
 
-    public abstract void HandleReqest(ActionCode action , string data);
+    public abstract void HandleReqest(ActionCode action , string data , Action callback= null);
 
     /// <summary>
     /// 响应服务器发送过来的消息
