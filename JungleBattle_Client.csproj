@@ -149,6 +149,7 @@
     <Compile Include="Assets\Scripts\Manager\UIManager.cs" />
     <Compile Include="Assets\Scripts\Net\Client.cs" />
     <Compile Include="Assets\Scripts\Net\Request\BaseRequest.cs" />
+    <Compile Include="Assets\Scripts\Net\Request\RoomRequest.cs" />
     <Compile Include="Assets\Scripts\Net\Request\UserRequest.cs" />
     <Compile Include="Assets\Scripts\Tools\Log.cs" />
     <Compile Include="Assets\Scripts\Tools\SoundType.cs" />

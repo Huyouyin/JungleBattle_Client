@@ -77,7 +77,7 @@ public class LoginPanel : BasePanel {
     /// <summary>
     /// 登陆成功回调
     /// </summary>
-    private void LoginCallBack()
+    private void LoginCallBack(object isSuccess)
     {
         GameFacade.instance.SetAccount(fieldName.text , fieldPass.text);
         GameFacade.instance.PopPanel();

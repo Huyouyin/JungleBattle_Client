@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class UserRequest :BaseRequest
 {
-    private Action loginCallBack;
     public UserRequest()
     {
         this.requestCode = RequestCode.User;
+        callBackdic = new Dictionary<ActionCode , Action<object>>();
     }
 
-    public override void HandleReqest(ActionCode action , string data , Action callback = null)
+    public override void HandleReqest(ActionCode action , string data , Action<object> callback = null)
     {
         switch(action)
         {
@@ -43,15 +43,16 @@ public class UserRequest :BaseRequest
     }
 
     //登陆请求
-    private void RequestLogin(string data , Action callback = null)
+    private void RequestLogin(string data , Action<object> callback = null)
     {
         GameFacade.instance.SendRequest(requestCode , ActionCode.Login , data);
-        this.loginCallBack = callback;
+        AddCallBack(callback,ActionCode.Login);
     }
     //注册请求
-    private void RequestRegister(string data , Action callback = null)
+    private void RequestRegister(string data , Action<object> callback = null)
     {
         GameFacade.instance.SendRequest(requestCode , ActionCode.Register , data);
+        AddCallBack(callback , ActionCode.Register);
     }
 
     //--------------------------------------------------------------------------------------------------------------------------
@@ -70,11 +71,7 @@ public class UserRequest :BaseRequest
             int wincount = int.Parse(datas[2]);
             //Log.i("总场数：" + totalcount + "  胜场:" + wincount);
             GameFacade.instance.SetPlayerGameCount(totalcount , wincount);
-            if(this.loginCallBack != null)
-            {
-                this.loginCallBack.Invoke();
-                loginCallBack = null;
-            }
+            InvokeCallBack(ActionCode.Login, null);
             return;
         }
         Toast.ShowToast("用户名不存在或密码不正确");
@@ -97,6 +94,8 @@ public class UserRequest :BaseRequest
             default:
                 throw new Exception("返回码出错" + resCode);
         }
+        InvokeCallBack(ActionCode.Register , null);
     }
+
 
 }

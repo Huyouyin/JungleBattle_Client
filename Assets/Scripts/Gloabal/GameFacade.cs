@@ -92,7 +92,7 @@ public class GameFacade :MonoBehaviour
         audioMgr.PlayBg(soundtype);
     }
 
-    public void HandleRequest(RequestCode reCode, ActionCode acCode ,string data,Action callback=null)
+    public void HandleRequest(RequestCode reCode, ActionCode acCode ,string data,Action<object> callback=null)
     {
         requestMgr.HandleRequest(reCode , acCode , data, callback);
     }
