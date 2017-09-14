@@ -69,8 +69,8 @@ public class RegisterPanel : BasePanel {
 
         if(VarifyAccount())
         {
-            string data = Message.PackContentData(fieldname.text , fieldpass.text);
-            GameFacade.instance.HandleRequest(RequestCode.RegisterRequest , ActionCode.Register , data);
+            string data = Message.PackContentData(' ', fieldname.text , fieldpass.text);
+            GameFacade.instance.HandleRequest(RequestCode.User , ActionCode.Register , data);
         }
     }
 

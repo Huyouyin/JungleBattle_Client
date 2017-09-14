@@ -70,8 +70,8 @@ public class LoginPanel : BasePanel {
         {
             return;
         }
-        string data = fieldName.text + " " + fieldPass.text;
-        GameFacade.instance.HandleRequest(RequestCode.LoginRequest , ActionCode.Login , data,LoginCallBack);
+        string data = Message.PackContentData(' ' , fieldName.text , fieldPass.text);
+        GameFacade.instance.HandleRequest(RequestCode.User , ActionCode.Login , data,LoginCallBack);
     }
 
     /// <summary>

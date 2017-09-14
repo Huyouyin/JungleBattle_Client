@@ -18,6 +18,6 @@ public abstract class BaseRequest{
     /// 响应服务器发送过来的消息
     /// </summary>
     /// <param name="mdata"></param>
-    public abstract void OnResponse(MessageData mdata);
+    public abstract void OnResponse(ActionCode action , string data);
 
 }
