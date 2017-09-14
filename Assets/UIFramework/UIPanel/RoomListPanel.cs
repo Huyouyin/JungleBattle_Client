@@ -7,12 +7,9 @@ using DG.Tweening;
 public class RoomListPanel : BasePanel {
     private Button closeButton;
     private Vector2 originPos = new Vector2(0 , 640f);
-
-    private Transform userPanel;
-
-    private Text usernameText;
-    private Text totalCountText;
-    private Text winCountText;
+    
+    private UserPanel userPanel;
+    private ListPanel listPanel;
 
     protected override void InitPanel()
     {
@@ -21,31 +18,49 @@ public class RoomListPanel : BasePanel {
         exitTime = 0.3f;
         base.InitPanel();
         closeButton = transform.Find("close").GetComponent<Button>();
+        userPanel = transform.Find("userpanel").GetComponent<UserPanel>();
+        listPanel = transform.Find("listpanel").GetComponent<ListPanel>();
+
+        userPanel.InitPanel();
+        listPanel.InitPanel();
         closeButton.onClick.AddListener(OnClickClose);
-        userPanel = transform.Find("userpanel");
-        usernameText = userPanel.Find("username").GetComponent<Text>();
-        totalCountText = userPanel.Find("totalcount").GetComponent<Text>();
-        winCountText = userPanel.Find("wincount").GetComponent<Text>();
     }
 
     public override void OnEnter()
     {
+        gameObject.SetActive(true);
         transform.localPosition = originPos;
         transform.localScale = Vector2.zero;
-        UpdatePlayerInfo();
+        userPanel.UpdatePlayerInfo();
         EnterTweening();
+        enterTweener.OnComplete(() =>
+        {
+            userPanel.onEnter();
+            listPanel.onEnter();
+        });
     }
 
     protected override void EnterTweening()
     {
         transform.DOLocalMoveY(0 , enterTime);
-        transform.DOScale(1 , enterTime);
+        enterTweener = transform.DOScale(1 , enterTime);
     }
 
     protected override void ExitTweening()
     {
-        transform.DOLocalMoveY(originPos.y , exitTime);
-        transform.DOScale(0 , exitTime);
+        Tweener tmptween = userPanel.onExit();
+        listPanel.onExit().OnComplete(() => { listPanel.gameObject.SetActive(false); });
+        tmptween.OnComplete(() =>
+        {
+            userPanel.gameObject.SetActive(false);
+            transform.DOLocalMoveY(originPos.y , exitTime);
+            exitTweener = transform.DOScale(0 , exitTime);
+            exitTweener.OnComplete(() =>
+            {
+                gameObject.SetActive(false);
+                GameFacade.instance.PushPanel(UIPanelType.login);
+            });
+        });
     }
 
     private void OnClickClose()
@@ -53,11 +68,5 @@ public class RoomListPanel : BasePanel {
         GameFacade.instance.PopPanel();
     }
 
-    private void UpdatePlayerInfo()
-    {
-        PlayerInfo info = GameFacade.instance.GetPlayerInfo();
-        usernameText.text = info.UserName;
-        winCountText.text = info.WinCount.ToString();
-        totalCountText.text = info.TotalCount.ToString();
-    }
+    
 }
