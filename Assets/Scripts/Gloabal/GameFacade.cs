@@ -63,13 +63,10 @@ public class GameFacade :MonoBehaviour
         socketMgr.SendRequest(reCode , acCode , data);
     }
 
-    public void SetPlayerGameCount(int total,int win)
+    
+    public void SetAccount(Account account)
     {
-       playerMgr.SetGameCount(total , win);
-    }
-    public void SetAccount(string name , string pass)
-    {
-        playerMgr.SetAccount(name, pass);
+        playerMgr.SetAccount(account);
     }
 
 
@@ -92,7 +89,7 @@ public class GameFacade :MonoBehaviour
         audioMgr.PlayBg(soundtype);
     }
 
-    public void HandleRequest(RequestCode reCode, ActionCode acCode ,string data,Action<object> callback=null)
+    public void HandleRequest(RequestCode reCode, ActionCode acCode ,string data,Action<object> callback)
     {
         requestMgr.HandleRequest(reCode , acCode , data, callback);
     }
@@ -102,9 +99,9 @@ public class GameFacade :MonoBehaviour
         requestMgr.OnResponse(mdata);
     }
     
-    public PlayerInfo GetPlayerInfo()
+    public Account GetAccount()
     {
-        return playerMgr.GetPlayerInfo();
+        return playerMgr.GetAccout();
     }
 
     public void ShowWait()

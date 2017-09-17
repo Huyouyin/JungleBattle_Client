@@ -70,7 +70,7 @@ public class RegisterPanel : BasePanel {
         if(VarifyAccount())
         {
             string data = Message.PackContentData(' ', fieldname.text , fieldpass.text);
-            GameFacade.instance.HandleRequest(RequestCode.User , ActionCode.Register , data);
+            GameFacade.instance.HandleRequest(RequestCode.User , ActionCode.Register , data,null);
         }
     }
 
@@ -103,23 +103,34 @@ public class RegisterPanel : BasePanel {
             Toast.ShowToast("两次密码不一致");
             return false;
         }
-        if(name.Contains(" "))
+        if( !VarifyString(name))
         {
-            Toast.ShowToast("用户名不能包含空格");
+            Toast.ShowToast("用户名只能是英文字符");
             return false;
         }
-        if(pass.Contains(" "))
+        if( !VarifyString(pass))
         {
-            Toast.ShowToast("用户名不能包含空格");
+            Toast.ShowToast("密码只能是英文字符");
             return false;
         }
-        if(confirmpass.Contains(" "))
+        if(!VarifyString(confirmpass))
         {
-            Toast.ShowToast("确认密码不能包含空格");
+            Toast.ShowToast("确认密码只能是英文字符");
             return false;
         }
         return true;
     }
 
+    private bool VarifyString(string str)
+    {
+        foreach(var v in str)
+        {
+            if(v<'A' || v>'Z'&& v<'a' || v>'z')
+            {
+                return false;
+            }
+        }
+        return true;
+    }
     
 }

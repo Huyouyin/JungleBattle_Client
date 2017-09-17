@@ -31,7 +31,6 @@ public class RoomListPanel : BasePanel {
         gameObject.SetActive(true);
         transform.localPosition = originPos;
         transform.localScale = Vector2.zero;
-        userPanel.UpdatePlayerInfo();
         EnterTweening();
         enterTweener.OnComplete(() =>
         {

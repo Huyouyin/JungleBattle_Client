@@ -17,7 +17,7 @@ public class MessageContent:MonoBehaviour{
 
     public void EnqueueMsg(MessageData mdata)
     {
-        Log.i("收到消息:" + mdata.requsetCode + " , " + mdata.actionCode + " , " + mdata.data);
+        Log.i("收到消息:" + mdata.ToString());
         msgQueue.Enqueue(mdata);
     }
 

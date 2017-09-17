@@ -77,14 +77,20 @@ public class LoginPanel : BasePanel {
     /// <summary>
     /// 登陆成功回调
     /// </summary>
-    private void LoginCallBack(object isSuccess)
+    private void LoginCallBack(object account)
     {
-        GameFacade.instance.SetAccount(fieldName.text , fieldPass.text);
-        GameFacade.instance.PopPanel();
-        exitTweener.OnComplete(() =>
+        if(account != null)
         {
-            GameFacade.instance.PushPanel(UIPanelType.roomlist);
-        });
+            Toast.ShowToast("登陆成功");
+            Account userAccount = account as Account;
+            GameFacade.instance.PopPanel();
+            exitTweener.OnComplete(() =>
+            {
+                GameFacade.instance.SetAccount(userAccount);
+                GameFacade.instance.PushPanel(UIPanelType.roomlist);
+            });
+        }
+        Toast.ShowToast("用户名或者密码错误");
     }
 
     /// <summary>

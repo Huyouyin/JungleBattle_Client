@@ -12,7 +12,7 @@ public class UserRequest :BaseRequest
         callBackdic = new Dictionary<ActionCode , Action<object>>();
     }
 
-    public override void HandleReqest(ActionCode action , string data , Action<object> callback = null)
+    public override void HandleReqest(ActionCode action , string data , Action<object> callback )
     {
         switch(action)
         {
@@ -21,6 +21,9 @@ public class UserRequest :BaseRequest
                 break;
             case ActionCode.Register:
                 RequestRegister(data , callback);
+                break;
+            case ActionCode.BattleCount:
+                RequestBattleCount(data,callback);
                 break;
             default:
                 throw new Exception("没有找到对应方法：" + action.ToString());
@@ -37,24 +40,32 @@ public class UserRequest :BaseRequest
             case ActionCode.Register:
                 OnResponseRegister(data);
                 break;
+            case ActionCode.BattleCount:
+                OnResponseBattleCount(data);
+                break;
             default:
                 throw new Exception("没有找到对应响应：" + action.ToString());
         }
     }
 
     //登陆请求
-    private void RequestLogin(string data , Action<object> callback = null)
+    private void RequestLogin(string data , Action<object> callback )
     {
         GameFacade.instance.SendRequest(requestCode , ActionCode.Login , data);
         AddCallBack(callback,ActionCode.Login);
     }
     //注册请求
-    private void RequestRegister(string data , Action<object> callback = null)
+    private void RequestRegister(string data , Action<object> callback )
     {
         GameFacade.instance.SendRequest(requestCode , ActionCode.Register , data);
         AddCallBack(callback , ActionCode.Register);
     }
-
+    //战斗次数请求
+    private void RequestBattleCount(string data ,Action<object> callback )
+    {
+        GameFacade.instance.SendRequest(requestCode , ActionCode.BattleCount , data);
+        AddCallBack(callback , ActionCode.BattleCount);
+    }
     //--------------------------------------------------------------------------------------------------------------------------
     //下面对应响应
     //--------------------------------------------------------------------------------------------------------------------------
@@ -62,19 +73,16 @@ public class UserRequest :BaseRequest
     //登陆响应
     private void OnResponseLogin(string data)
     {
-        string[] datas = data.Split(',');
+        string[] datas = data.Split(' ');
         LoginResultCode resCode = (LoginResultCode)Enum.Parse(typeof(LoginResultCode) , datas[0]);
         if(resCode == LoginResultCode.Success)
         {
-            Toast.ShowToast("登陆成功");
-            int totalcount = int.Parse(datas[1]);
-            int wincount = int.Parse(datas[2]);
-            //Log.i("总场数：" + totalcount + "  胜场:" + wincount);
-            GameFacade.instance.SetPlayerGameCount(totalcount , wincount);
-            InvokeCallBack(ActionCode.Login, null);
-            return;
+            int userid = int.Parse(datas[1]);
+            string username = datas[2];
+            string userpass = datas[3];
+            Account account = new Account(userid , username , userpass);
+            InvokeCallBack(ActionCode.Login, account);
         }
-        Toast.ShowToast("用户名不存在或密码不正确");
     }
     //注册响应
     private void OnResponseRegister(string data)
@@ -96,6 +104,11 @@ public class UserRequest :BaseRequest
         }
         InvokeCallBack(ActionCode.Register , null);
     }
-
+    
+    //战斗次数响应
+    private void OnResponseBattleCount(string data)
+    {
+        InvokeCallBack(ActionCode.BattleCount , data);
+    }
 
 }

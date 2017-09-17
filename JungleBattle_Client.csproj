@@ -147,6 +147,8 @@
     <Compile Include="Assets\Scripts\Manager\RequestManager.cs" />
     <Compile Include="Assets\Scripts\Manager\SocketManager.cs" />
     <Compile Include="Assets\Scripts\Manager\UIManager.cs" />
+    <Compile Include="Assets\Scripts\Models\PlayerModel\Account.cs" />
+    <Compile Include="Assets\Scripts\Models\RoomModel\Room.cs" />
     <Compile Include="Assets\Scripts\Net\Client.cs" />
     <Compile Include="Assets\Scripts\Net\Request\BaseRequest.cs" />
     <Compile Include="Assets\Scripts\Net\Request\RoomRequest.cs" />

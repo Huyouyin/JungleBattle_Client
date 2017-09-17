@@ -16,6 +16,7 @@ public class UserPanel : MonoBehaviour {
     private float enterPosX = -779;
     private float enterTime = 0.3f;
     private float exitTime = 0.3f;
+    private Account userAccount;
 
     public void InitPanel()
     {
@@ -34,6 +35,27 @@ public class UserPanel : MonoBehaviour {
     {
         gameObject.SetActive(true);
         transform.DOLocalMoveX(originPosX , enterTime);
+        userAccount = GameFacade.instance.GetAccount();
+        usernameText.text = userAccount.userName;
+        GetBattleCount();
+    }
+
+    private void GetBattleCount()
+    {
+        GameFacade.instance.HandleRequest(RequestCode.User , ActionCode.BattleCount , userAccount.userid.ToString() , ProcessBattleCount);
+    }
+
+    private void ProcessBattleCount(object obj)
+    {
+        string data = obj as string;
+        string[] datas = data.Split(',');
+        UpdateBattleCount(datas[0] , datas[1]);
+    }
+
+    private void UpdateBattleCount(string totalcount,string wincount)
+    {
+        totalCountText.text = totalcount;
+        winCountText.text = wincount;
     }
 
     public Tweener onExit()
@@ -41,28 +63,20 @@ public class UserPanel : MonoBehaviour {
         return transform.DOLocalMoveX(enterPosX , exitTime);
     }
 
-    public void UpdatePlayerInfo()
-    {
-        PlayerInfo info = GameFacade.instance.GetPlayerInfo();
-        usernameText.text = info.UserName;
-        winCountText.text = info.WinCount.ToString();
-        totalCountText.text = info.TotalCount.ToString();
-    }
-
     private void OnClickCreate()
     {
-        GameFacade.instance.HandleRequest(RequestCode.Room , ActionCode.CreateRoom , usernameText.text);
+        //GameFacade.instance.HandleRequest(RequestCode.Room , ActionCode.CreateRoom , usernameText.text);
     }
     private void CreateRoomCallBack(object obj)
     {
         string datas = obj as string;
         string[] dataArray = datas.Split(',');
-        RoomResultCode resCode = (RoomResultCode)Enum.Parse(typeof(RoomResultCode) , dataArray[0]);
+        CreateRoomResultCode resCode = (CreateRoomResultCode)Enum.Parse(typeof(CreateRoomResultCode) , dataArray[0]);
         switch(resCode)
         {
-            case RoomResultCode.CreateSuccess:
+            case CreateRoomResultCode.CreateSuccess:
                 break;
-            case RoomResultCode.CreateFail:
+            case CreateRoomResultCode.CreateFail:
                 break;
             default:
                 throw new Exception("创建房间返回码错误！！  返回码：" + resCode);

@@ -15,6 +15,8 @@ public class RequestManager : BaseManager {
     {
         requestDic = new Dictionary<RequestCode , BaseRequest>();
         requestDic.Add(RequestCode.User , new UserRequest());
+        requestDic.Add(RequestCode.Room , new RoomRequest());
+
     }
     private BaseRequest GetRequest(RequestCode requestcode)
     {

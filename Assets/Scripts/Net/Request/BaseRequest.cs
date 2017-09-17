@@ -28,7 +28,9 @@ public abstract class BaseRequest{
         {
             callback.Invoke(obj);
             callBackdic.Remove(action);
+            return;
         }
+        Log.i("回调为空"+"---------->"+action.ToString());
     }
 
     protected void AddCallBack(Action<object> callback, ActionCode action)
@@ -41,6 +43,10 @@ public abstract class BaseRequest{
                 //加入代码执行到这里，说明发起了多次请求，
                 //必须修改代码，否则当一次请求回来之后，回调执行之后被置空，不会有第二次的回调了
                 throw new Exception("已经存在该类型的回调");
+            }
+            else
+            {
+                callBackdic.Add(action , callback);
             }
         }
     }

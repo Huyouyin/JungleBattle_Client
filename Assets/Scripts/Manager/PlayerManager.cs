@@ -4,29 +4,33 @@ using UnityEngine;
 
 public class PlayerManager : BaseManager {
 
-    PlayerInfo playerInfo;
+    Account userAccount;
+    CompetiticonCount competitonCount;
 
     public PlayerManager(GameFacade facade) : base(facade)
     {
-        playerInfo = new PlayerInfo();
     }
 
-    public void SetGameCount(int total , int win)
+    public void SetCompetiticonCount(CompetiticonCount ccount)
     {
-        playerInfo.SetGameCount(total , win);
+        competitonCount = ccount;
     }
-    public void SetAccount(string name , string pass)
+    public void SetAccount(Account account)
     {
-        playerInfo.SetAccount(name , pass);
+        userAccount = account;
     }
 
-    public PlayerInfo GetPlayerInfo()
+    public Account GetAccout()
     {
-        return playerInfo;
+        return userAccount;
+    }
+    public CompetiticonCount getCompetitionCount()
+    {
+        return competitonCount;
     }
 }
 
- public class PlayerInfo
+ public class CompetiticonCount
 {
     public int TotalCount
     {
@@ -38,25 +42,11 @@ public class PlayerManager : BaseManager {
         get;
         private set;
     }
-    public string UserName
-    {
-        get;
-        private set;
-    }
-    public string UserPass
-    {
-        get;
-        private set;
-    }
+    
 
     public void SetGameCount(int total , int win)
     {
         WinCount = win;
         TotalCount = total;
-    }
-    public void SetAccount(string name , string pass)
-    {
-        UserName = name;
-        UserPass = pass;
-    }
+    }    
 }
