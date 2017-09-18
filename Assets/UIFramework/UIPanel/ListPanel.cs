@@ -12,14 +12,35 @@ public class ListPanel : MonoBehaviour {
     private float enterPosX = 941f;
     private float enterTime = 0.3f;
     private float exitTime = 0.3f;
-
+    private List<RoomItem> roomItemList;
+    private Transform contentTransform;
     private Text noRoomText;
+    GameObject itemPrefab;
+    private RoomListPanel parentPanel;
 
-    public void InitPanel()
+
+    private GameObject ItemPrefab
     {
+        get
+        {
+            if(itemPrefab == null)
+            {
+                itemPrefab = Resources.Load<GameObject>("Element/Room/roomitem");
+            }
+            return itemPrefab;
+        }
+    }
+
+    public void InitPanel(RoomListPanel parentPanel)
+    {
+        this.parentPanel = parentPanel;
+
         float y = transform.position.y;
         transform.position = new Vector2(enterPosX , y);
         noRoomText = transform.Find("noroom").GetComponent<Text>();
+        contentTransform = transform.Find("mask/content");
+        roomItemList = new List<RoomItem>();
+
         noRoomText.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
@@ -38,16 +59,36 @@ public class ListPanel : MonoBehaviour {
     {
         GameFacade.instance.HandleRequest(RequestCode.Room , ActionCode.RoomListUnStart , "" , ProcessRoomList);
     }
-    private void ProcessRoomList(object roomlist)
+    private void ProcessRoomList(object roomlistArray)
     {
-        List<Room> roomList = roomlist as List<Room>;
+        List<Room> roomList = roomlistArray as List<Room>;
+
         if(roomList.Count == 0)
         {
             ShowNoRoomText();
             return;
         }
+
+        foreach(Room r in roomList)
+        {
+            string username = r.ownerName;
+            string roomid = r.roomId.ToString();
+            CreateRoomItem(username , roomid);
+        }
     }
 
+    public void CreateRoomItem(string username, string roomid)
+    {
+        RoomItem item = Instantiate<GameObject>(ItemPrefab).GetComponent<RoomItem>();
+        item.InitItem(roomid , username);
+        item.transform.SetParent(contentTransform);
+        if(username.Equals(PlayerManager.UserAccount.userName))
+        {
+            item.transform.SetAsFirstSibling();
+            item.ShowMyRoom();
+        }
+        roomItemList.Add(item);
+    }
 
     private void ShowNoRoomText()
     {
@@ -57,6 +98,10 @@ public class ListPanel : MonoBehaviour {
 
     public Tweener onExit()
     {
+        if(itemPrefab != null)
+        {
+            Resources.UnloadAsset(itemPrefab);
+        }
         return transform.DOLocalMoveX(enterPosX , exitTime);
     }
 }

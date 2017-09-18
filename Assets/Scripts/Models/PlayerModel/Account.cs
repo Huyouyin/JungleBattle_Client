@@ -4,9 +4,21 @@ using UnityEngine;
 
 public class Account
 {
-    public int userid;
-    public string userName;
-    public string userPass;
+    public int userid
+    {
+        get;
+        private set;
+    }
+    public string userName
+    {
+        get;
+        private set;
+    }
+    public string userPass
+    {
+        get;
+        private set;
+    }
 
     public Account(int id , string name , string pass)
     {

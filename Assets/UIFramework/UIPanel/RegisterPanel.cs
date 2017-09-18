@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Common;
+using System;
 
 public class RegisterPanel : BasePanel {
     private Button closeButton;
@@ -70,7 +71,35 @@ public class RegisterPanel : BasePanel {
         if(VarifyAccount())
         {
             string data = Message.PackContentData(' ', fieldname.text , fieldpass.text);
-            GameFacade.instance.HandleRequest(RequestCode.User , ActionCode.Register , data,null);
+            GameFacade.instance.HandleRequest(RequestCode.User , ActionCode.Register , data, RegisterCallBack);
+        }
+    }
+
+    private void RegisterCallBack(object obj)
+    {
+        string data = obj as string;
+        Log.i(data);
+        string[] dataArray = data.Split(',');
+        RegisterResultCode resCode = (RegisterResultCode)Enum.Parse(typeof(RegisterResultCode) , dataArray[0]);
+        switch(resCode)
+        {
+            case RegisterResultCode.Success:
+                Toast.ShowToast("注册成功");
+                GameFacade.instance.PopPanel();
+                exitTweener.OnComplete(() => {
+                    Account userAccount = new Account(int.Parse(dataArray[1]),dataArray[2],dataArray[3]);
+                    GameFacade.instance.SetAccount(userAccount);
+                    GameFacade.instance.PushPanel(UIPanelType.roomlist);
+                });
+                break;
+            case RegisterResultCode.Fail:
+                Toast.ShowToast("注册失败");
+                break;
+            case RegisterResultCode.AlreadyExit:
+                Toast.ShowToast("用户名重复");
+                break;
+            default:
+                throw new Exception("返回码出错" + resCode);
         }
     }
 

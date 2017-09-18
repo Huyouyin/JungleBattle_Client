@@ -21,8 +21,8 @@ public class RoomListPanel : BasePanel {
         userPanel = transform.Find("userpanel").GetComponent<UserPanel>();
         listPanel = transform.Find("listpanel").GetComponent<ListPanel>();
 
-        userPanel.InitPanel();
-        listPanel.InitPanel();
+        userPanel.InitPanel(this);
+        listPanel.InitPanel(this);
         closeButton.onClick.AddListener(OnClickClose);
     }
 
@@ -67,5 +67,8 @@ public class RoomListPanel : BasePanel {
         GameFacade.instance.PopPanel();
     }
 
-    
+    public void CreateRoomItem(string roomid,string username)
+    {
+        listPanel.CreateRoomItem(username , roomid);
+    }
 }

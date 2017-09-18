@@ -4,8 +4,22 @@ using UnityEngine;
 
 public class PlayerManager : BaseManager {
 
-    Account userAccount;
-    CompetiticonCount competitonCount;
+    static Account userAccount;
+    public static Account UserAccount
+    {
+        get
+        {
+            return userAccount;
+        }
+    }
+    static CompetiticonCount competitonCount;
+    public static CompetiticonCount UserCompetitonCount
+    {
+        get
+        {
+            return competitonCount;
+        }
+    }
 
     public PlayerManager(GameFacade facade) : base(facade)
     {

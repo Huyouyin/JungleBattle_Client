@@ -87,22 +87,7 @@ public class UserRequest :BaseRequest
     //注册响应
     private void OnResponseRegister(string data)
     {
-        RegisterResultCode resCode = (RegisterResultCode)Enum.Parse(typeof(RegisterResultCode) , data);
-        switch(resCode)
-        {
-            case RegisterResultCode.Success:
-                Toast.ShowToast("注册成功");
-                break;
-            case RegisterResultCode.Fail:
-                Toast.ShowToast("注册失败");
-                break;
-            case RegisterResultCode.AlreadyExit:
-                Toast.ShowToast("用户名重复");
-                break;
-            default:
-                throw new Exception("返回码出错" + resCode);
-        }
-        InvokeCallBack(ActionCode.Register , null);
+        InvokeCallBack(ActionCode.Register , data);
     }
     
     //战斗次数响应

@@ -17,9 +17,11 @@ public class UserPanel : MonoBehaviour {
     private float enterTime = 0.3f;
     private float exitTime = 0.3f;
     private Account userAccount;
+    private RoomListPanel parentPanel;
 
-    public void InitPanel()
+    public void InitPanel(RoomListPanel parentPanel)
     {
+        this.parentPanel = parentPanel;
         usernameText = transform.Find("username").GetComponent<Text>();
         totalCountText = transform.Find("totalcount").GetComponent<Text>();
         winCountText = transform.Find("wincount").GetComponent<Text>();
@@ -65,22 +67,27 @@ public class UserPanel : MonoBehaviour {
 
     private void OnClickCreate()
     {
-        //GameFacade.instance.HandleRequest(RequestCode.Room , ActionCode.CreateRoom , usernameText.text);
+        GameFacade.instance.HandleRequest(RequestCode.Room , ActionCode.CreateRoom , userAccount.userName.ToString(),CreateRoomCallBack);
     }
     private void CreateRoomCallBack(object obj)
     {
         string datas = obj as string;
+        Log.i(datas);
         string[] dataArray = datas.Split(',');
         CreateRoomResultCode resCode = (CreateRoomResultCode)Enum.Parse(typeof(CreateRoomResultCode) , dataArray[0]);
         switch(resCode)
         {
             case CreateRoomResultCode.CreateSuccess:
+                Toast.ShowToast("创建成功,房间ID:" + dataArray[1],2f);
+                parentPanel.CreateRoomItem(dataArray[1] , PlayerManager.UserAccount.userName);
                 break;
             case CreateRoomResultCode.CreateFail:
+                break;
+            case CreateRoomResultCode.RepeatCreate:
+                Toast.ShowToast("你已经创建了房间，解散前不能重复创建",2f);
                 break;
             default:
                 throw new Exception("创建房间返回码错误！！  返回码：" + resCode);
         }
-        Toast.ShowToast("创建成功,房间ID:" + dataArray[1]);
     }
 }

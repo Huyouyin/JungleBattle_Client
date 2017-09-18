@@ -57,10 +57,21 @@ public class RoomRequest : BaseRequest {
     /// <param name="data"></param>
     private void OnResponseRoomList(string data)
     {
-        string[] datas = data.Split(',');
+        string[] datas = data.Split('_');
         int roomCount = int.Parse(datas[0]);
-        Log.i("房间个数:"+roomCount);
-        //InvokeCallBack(ActionCode.RoomListUnStart , data);
+        //Log.i("房间个数:"+roomCount);
+        string[] rooms = datas[1].Split('|');
+        List<Room> roomList = new List<Room>(roomCount);
+        foreach(string v in rooms)
+        {
+            if(!string.IsNullOrEmpty(v))
+            {
+                string[] roomitemArray = v.Split(',');
+                Room room = new Room(int.Parse(roomitemArray[0]) , roomitemArray[1]);
+                roomList.Add(room);
+            }
+        }
+        InvokeCallBack(ActionCode.RoomListUnStart , roomList);
     }
 
     /// <summary>
@@ -81,7 +92,6 @@ public class RoomRequest : BaseRequest {
     /// <param name="data"></param>
     private void OnResponseCreateRoom(string data)
     {
-        Log.i(data);
         InvokeCallBack(ActionCode.CreateRoom , data);
     }
 
