@@ -27,14 +27,14 @@ public class RoomItem : MonoBehaviour {
         ownerNameText.text = ownername;
     }
 
-    public void OnClickJoin()
+    private void OnClickJoin()
     {
         Log.i("加入：" + roomIDText.text);
     }
 	
-    public void OnClickMyRoom()
+    private void OnClickMyRoom()
     {
-
+        GameFacade.instance.PushPanel(UIPanelType.waitingjoin);
     }
 
     public void ShowMyRoom(bool isShowmyroom = true)
@@ -42,4 +42,5 @@ public class RoomItem : MonoBehaviour {
         myroomButton.gameObject.SetActive(isShowmyroom);
         joinButton.gameObject.SetActive(!isShowmyroom);
     }
+    
 }

@@ -19,9 +19,9 @@ public class StartPanel : BasePanel {
         loginButton.transform.rotation = Quaternion.Euler(new Vector3(0 , 0 , 180));
         loginButton.transform.localScale = Vector3.zero;
     }
-    public override void OnEnter()
+    protected override void ResetPanel()
     {
-        base.OnEnter();
+        gameObject.SetActive(true);
     }
     protected override void EnterTweening()
     {
@@ -37,17 +37,15 @@ public class StartPanel : BasePanel {
         GameFacade.instance.PopPanel();
     }
 
-    public override void OnExit()
-    {
-        base.OnExit();
-        GameFacade.instance.PushPanel(UIPanelType.login);
-    }
+   
     protected override void ExitTweening()
     {
         loginButton.transform.DOLocalRotateQuaternion(Quaternion.Euler(new Vector3(0 , 0 , 180)) , exitTime);
         loginButton.transform.DOScale(0 , exitTime).OnComplete(() => {
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
+            gameObject.SetActive(false);
+            GameFacade.instance.PushPanel(UIPanelType.login);
         });
     }
 }

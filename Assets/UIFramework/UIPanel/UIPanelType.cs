@@ -9,5 +9,6 @@ public enum UIPanelType  {
     login,
     register,
     roomlist,
-    wait
+    wait,
+    waitingjoin
 }

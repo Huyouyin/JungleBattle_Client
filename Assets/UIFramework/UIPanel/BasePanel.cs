@@ -34,6 +34,7 @@ public class BasePanel : MonoBehaviour {
     public virtual void OnPause()
     {
         canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 
     /// <summary>
@@ -42,6 +43,7 @@ public class BasePanel : MonoBehaviour {
     public virtual void OnResume()
     {
         canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
     }
 
     /// <summary>

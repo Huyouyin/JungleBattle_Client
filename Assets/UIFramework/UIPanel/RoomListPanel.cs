@@ -26,16 +26,22 @@ public class RoomListPanel : BasePanel {
         closeButton.onClick.AddListener(OnClickClose);
     }
 
-    public override void OnEnter()
+    protected override void ResetPanel()
     {
         gameObject.SetActive(true);
         transform.localPosition = originPos;
         transform.localScale = Vector2.zero;
-        EnterTweening();
+    }
+
+    public override void OnEnter()
+    {
+        base.OnEnter();
         enterTweener.OnComplete(() =>
         {
             userPanel.onEnter();
             listPanel.onEnter();
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
         });
     }
 
@@ -48,23 +54,23 @@ public class RoomListPanel : BasePanel {
     protected override void ExitTweening()
     {
         Tweener tmptween = userPanel.onExit();
-        listPanel.onExit().OnComplete(() => { listPanel.gameObject.SetActive(false); });
+        listPanel.onExit();
         tmptween.OnComplete(() =>
         {
             userPanel.gameObject.SetActive(false);
             transform.DOLocalMoveY(originPos.y , exitTime);
             exitTweener = transform.DOScale(0 , exitTime);
-            exitTweener.OnComplete(() =>
-            {
-                gameObject.SetActive(false);
-                GameFacade.instance.PushPanel(UIPanelType.login);
-            });
         });
     }
 
     private void OnClickClose()
     {
         GameFacade.instance.PopPanel();
+        exitTweener.OnComplete(() =>
+        {
+            gameObject.SetActive(false);
+            GameFacade.instance.PushPanel(UIPanelType.login);
+        });
     }
 
     public void CreateRoomItem(string roomid,string username)

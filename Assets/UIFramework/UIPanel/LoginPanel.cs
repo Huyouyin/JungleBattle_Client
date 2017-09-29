@@ -26,7 +26,7 @@ public class LoginPanel : BasePanel {
         fieldName = transform.Find("username/Input").GetComponent<InputField>();
         fieldPass = transform.Find("pass/Input").GetComponent<InputField>();
     }
-
+    
     protected override void EnterTweening()
     {
         transform.localScale = Vector2.zero;
@@ -48,6 +48,7 @@ public class LoginPanel : BasePanel {
     {
         fieldName.text = "";
         fieldPass.text = "";
+        gameObject.SetActive(true);
     }
 
     private void OnClickClose()
@@ -57,6 +58,7 @@ public class LoginPanel : BasePanel {
         exitTweener.OnComplete(() => {
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
+            gameObject.SetActive(false);
             GameFacade.instance.PushPanel(UIPanelType.start);
         });
     }
@@ -86,6 +88,9 @@ public class LoginPanel : BasePanel {
             GameFacade.instance.PopPanel();
             exitTweener.OnComplete(() =>
             {
+                canvasGroup.interactable = false;
+                canvasGroup.blocksRaycasts = false;
+                gameObject.SetActive(false);
                 GameFacade.instance.SetAccount(userAccount);
                 GameFacade.instance.PushPanel(UIPanelType.roomlist);
             });

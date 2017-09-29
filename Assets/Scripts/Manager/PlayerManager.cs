@@ -21,6 +21,12 @@ public class PlayerManager : BaseManager {
         }
     }
 
+    public static string myWaitingRoomID
+    {
+        get;
+        private set;
+    }
+
     public PlayerManager(GameFacade facade) : base(facade)
     {
     }
@@ -33,7 +39,10 @@ public class PlayerManager : BaseManager {
     {
         userAccount = account;
     }
-
+    public void SetWaitingRoomID(string roomid)
+    {
+        myWaitingRoomID = roomid;
+    }
     public Account GetAccout()
     {
         return userAccount;
@@ -57,7 +66,10 @@ public class PlayerManager : BaseManager {
         private set;
     }
     
-
+    public CompetiticonCount(int total,int win)
+    {
+        SetGameCount(total , win);
+    }
     public void SetGameCount(int total , int win)
     {
         WinCount = win;

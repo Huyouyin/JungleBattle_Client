@@ -51,6 +51,8 @@ public class UserPanel : MonoBehaviour {
     {
         string data = obj as string;
         string[] datas = data.Split(',');
+        CompetiticonCount ccount = new CompetiticonCount(int.Parse(datas[0]) , int.Parse(datas[1]));
+        GameFacade.instance.SetCompetitionCount(ccount);
         UpdateBattleCount(datas[0] , datas[1]);
     }
 
@@ -79,7 +81,9 @@ public class UserPanel : MonoBehaviour {
         {
             case CreateRoomResultCode.CreateSuccess:
                 Toast.ShowToast("创建成功,房间ID:" + dataArray[1],2f);
+                GameFacade.instance.SetWaitingRoomID(dataArray[1]);
                 parentPanel.CreateRoomItem(dataArray[1] , PlayerManager.UserAccount.userName);
+                GameFacade.instance.PushPanel(UIPanelType.waitingjoin);
                 break;
             case CreateRoomResultCode.CreateFail:
                 break;

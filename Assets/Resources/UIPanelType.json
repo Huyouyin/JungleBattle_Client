@@ -26,6 +26,10 @@
   {
     "panelTypeString": "wait",
     "path": "UIPanel/WaitPanel"
+  },
+  {
+    "panelTypeString": "waitingjoin",
+     "path": "UIPanel/WaitingJoinPanel"
   }
 
 

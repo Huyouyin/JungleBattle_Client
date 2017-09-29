@@ -68,7 +68,14 @@ public class GameFacade :MonoBehaviour
     {
         playerMgr.SetAccount(account);
     }
-
+    public void SetCompetitionCount(CompetiticonCount ccount)
+    {
+        playerMgr.SetCompetiticonCount(ccount);
+    }
+    public void SetWaitingRoomID(string roomid)
+    {
+        playerMgr.SetWaitingRoomID(roomid);
+    }
 
     public void PopPanel()
     {
